@@ -11,4 +11,8 @@ class ShopController extends Controller
     {
         return view('customer.pages.index');
     }
+    public function showContact()
+    {
+        return view('customer.pages.contact');
+    }
 }
