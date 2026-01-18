@@ -1391,6 +1391,7 @@
                 <a href="#" class="m-all-1">
                     <img src="/customer/images/icons/icon-pay-03.png" alt="ICON-PAY">
                 </a>
+                </a>
 
                 <a href="#" class="m-all-1">
                     <img src="/customer/images/icons/icon-pay-04.png" alt="ICON-PAY">

@@ -2,11 +2,16 @@
 
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Customer\ShopController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect()->route('customer.showIndex');
+});
+Route::prefix('auth')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('auth.showLogin');
+    Route::get('/register', [AuthController::class, 'showRegister'])->name('auth.showRegister');
 });
 Route::prefix('customer')
     ->name('customer.')
