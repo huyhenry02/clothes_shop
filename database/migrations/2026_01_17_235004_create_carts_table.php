@@ -15,8 +15,7 @@ return new class extends Migration
             $table->bigInteger('product_id')->unsigned();
             $table->string('size', 255)->nullable();
             $table->integer('quantity');
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
+            $table->timestamps();
             $table->index('customer_id', 'carts_customer_id_foreign');
             $table->index('product_id', 'carts_product_id_foreign');
             $table->foreign('customer_id')->references('id')->on('customers');

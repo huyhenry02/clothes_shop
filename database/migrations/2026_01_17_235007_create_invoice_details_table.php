@@ -16,8 +16,7 @@ return new class extends Migration
             $table->string('size', 255)->nullable();
             $table->integer('quantity');
             $table->integer('total_price');
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
+            $table->timestamps();
             $table->index('invoice_id', 'invoice_details_invoice_id_foreign');
             $table->index('product_id', 'invoice_details_product_id_foreign');
             $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');

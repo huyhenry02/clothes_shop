@@ -27,8 +27,7 @@ return new class extends Migration
             $table->string('material', 100)->nullable();
             $table->string('style')->nullable();
             $table->boolean('is_active')->default('1');
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
+            $table->timestamps();
             $table->index('category_id', 'products_category_id_foreign');
             $table->foreign('category_id')->references('id')->on('categories');
         });

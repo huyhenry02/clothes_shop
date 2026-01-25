@@ -21,7 +21,7 @@ class User extends Authenticatable
     protected $fillable = [
         'phone',
         'password',
-        'role'
+        'user_type'
     ];
     public const ROLE_ADMIN = 'admin';
     public const ROLE_EMPLOYEE = 'employee';

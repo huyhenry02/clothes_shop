@@ -17,8 +17,7 @@ return new class extends Migration
             $table->text('address');
             $table->string('gender');
             $table->date('birthday');
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
+            $table->timestamps();
             $table->index('user_id', 'customers_user_id_foreign');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

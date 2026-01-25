@@ -20,8 +20,7 @@ return new class extends Migration
             $table->string('payment_status')->default('paid');
             $table->dateTime('payment_time')->nullable();
             $table->bigInteger('employee_id')->unsigned()->nullable();
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
+            $table->timestamps();
             $table->unique('invoice_code', 'invoices_invoice_code_unique');
             $table->index('employee_id', 'invoices_employee_id_foreign');
             $table->foreign('employee_id')->references('id')->on('employees')->onDelete('set null');

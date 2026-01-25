@@ -15,8 +15,7 @@ return new class extends Migration
             $table->string('name', 100);
             $table->text('sizes')->nullable();
             $table->text('description')->nullable();
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
+            $table->timestamps();
         });
     }
 

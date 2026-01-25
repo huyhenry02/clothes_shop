@@ -16,8 +16,7 @@ return new class extends Migration
             $table->string('email', 100);
             $table->string('position', 100);
             $table->text('address');
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
+            $table->timestamps();
             $table->index('user_id', 'employees_user_id_foreign');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

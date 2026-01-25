@@ -16,8 +16,7 @@ return new class extends Migration
             $table->string('size', 255)->nullable();
             $table->integer('quantity');
             $table->integer('total_price');
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
+            $table->timestamps();
             $table->index('order_id', 'order_details_order_id_foreign');
             $table->index('product_id', 'order_details_product_id_foreign');
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');

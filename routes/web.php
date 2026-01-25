@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\EmployeeController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Customer\ShopController;
@@ -47,5 +48,13 @@ Route::prefix('admin')
                 Route::get('/', [CategoryController::class, 'showIndex'])->name('showIndex');
                 Route::get('/create', [CategoryController::class, 'showCreate'])->name('showCreate');
                 Route::get('/edit/{id}', [CategoryController::class, 'showEdit'])->name('showEdit');
+            });
+
+        Route::prefix('product')
+            ->name('product.')
+            ->group(function () {
+                Route::get('/', [ProductController::class, 'showIndex'])->name('showIndex');
+                Route::get('/create', [ProductController::class, 'showCreate'])->name('showCreate');
+                Route::get('/edit/{id}', [ProductController::class, 'showEdit'])->name('showEdit');
             });
     });

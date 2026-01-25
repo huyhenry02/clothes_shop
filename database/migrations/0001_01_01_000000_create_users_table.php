@@ -16,11 +16,10 @@ return new class extends Migration
             $table->collation = 'utf8mb4_unicode_ci';
             $table->id();
             $table->string('phone', 100);
+            $table->enum('user_type', ['employee', 'admin', 'customer'])->default('customer');
             $table->string('password', 255);
-            $table->string('role');
             $table->string('remember_token', 100)->nullable();
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
+            $table->timestamps();
             $table->unique('phone', 'users_phone_unique');
         });
 

@@ -27,8 +27,7 @@ return new class extends Migration
             $table->string('payment_bank_code', 255)->nullable();
             $table->string('payment_response_code', 255)->nullable();
             $table->string('payment_secure_hash', 255)->nullable();
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
+            $table->timestamps();
             $table->bigInteger('updated_by')->unsigned()->nullable();
             $table->unique('order_code', 'orders_order_code_unique');
             $table->index('customer_id', 'orders_customer_id_foreign');
