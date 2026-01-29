@@ -14,7 +14,7 @@
         <div class="page-header-right ms-auto">
             <div class="page-header-right-items">
                 <div class="d-flex align-items-center gap-2 page-header-right-items-wrapper">
-                    <a href="#" class="btn btn-primary">
+                    <a href="{{ route('admin.employee.showCreate') }}" class="btn btn-primary">
                         <i class="feather-plus me-2"></i>
                         <span>Thêm mới nhân viên</span>
                     </a>
@@ -65,7 +65,7 @@
                                         </td>
 
                                         <td class="fw-semibold text-dark">
-                                            {{ $employee->phone ?? '—' }}
+                                            {{ optional($employee->user)->phone ?? '—' }}
                                         </td>
 
                                         <td>
@@ -110,13 +110,7 @@
 
                                                 <ul class="dropdown-menu dropdown-menu-end">
                                                     <li>
-                                                        <a class="dropdown-item" href="#">
-                                                            <i class="feather feather-eye me-2"></i>
-                                                            <span>Xem</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="#">
+                                                        <a class="dropdown-item" href="{{ route('admin.employee.showEdit', $employee->id) }}">
                                                             <i class="feather feather-edit-3 me-2"></i>
                                                             <span>Sửa</span>
                                                         </a>

@@ -10,7 +10,7 @@
         $phone = old('phone', $customer->user->phone ?? '');
         $email = old('email', $customer->email ?? '');
         $gender = old('gender', $customer->gender ?? '');
-        $birthday = old('birthday', $customer->birthday ? Carbon::parse($customer->birthday)->format('Y-m-d') : '');
+        $birthday = old('birthday', isset($customer->birthday) ? Carbon::parse($customer->birthday)->format('Y-m-d') : '');
         $address = old('address', $customer->address ?? '');
     @endphp
 

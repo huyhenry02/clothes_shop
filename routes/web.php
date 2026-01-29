@@ -15,6 +15,9 @@ Route::get('/', function () {
 Route::prefix('auth')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('auth.showLogin');
     Route::get('/register', [AuthController::class, 'showRegister'])->name('auth.showRegister');
+
+    Route::post('/login', [AuthController::class, 'postLogin'])->name('postLogin');
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 Route::prefix('customer')
     ->name('customer.')
@@ -56,5 +59,6 @@ Route::prefix('admin')
                 Route::get('/', [ProductController::class, 'showIndex'])->name('showIndex');
                 Route::get('/create', [ProductController::class, 'showCreate'])->name('showCreate');
                 Route::get('/edit/{id}', [ProductController::class, 'showEdit'])->name('showEdit');
+                Route::get('/detail/{id}', [ProductController::class, 'showDetail'])->name('showDetail');
             });
     });

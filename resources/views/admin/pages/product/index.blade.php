@@ -134,13 +134,13 @@
 
                                                 <ul class="dropdown-menu dropdown-menu-end">
                                                     <li>
-                                                        <a class="dropdown-item" href="#">
+                                                        <a class="dropdown-item" href="{{ route('admin.product.showDetail' , $product->id) }}">
                                                             <i class="feather-eye me-2"></i>
                                                             <span>Xem</span>
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="#">
+                                                        <a class="dropdown-item" href="{{ route('admin.product.showEdit' , $product->id) }}">
                                                             <i class="feather-edit-3 me-2"></i>
                                                             <span>Sửa</span>
                                                         </a>

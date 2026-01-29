@@ -129,14 +129,7 @@
                                                 <ul class="dropdown-menu dropdown-menu-end">
                                                     <li>
                                                         <a class="dropdown-item"
-                                                           href="">
-                                                            <i class="feather feather-eye me-2"></i>
-                                                            <span>Xem</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item"
-                                                           href="">
+                                                           href="{{ route('admin.customer.showEdit', $customer->id) }}">
                                                             <i class="feather feather-edit-3 me-2"></i>
                                                             <span>Sửa</span>
                                                         </a>

@@ -254,7 +254,7 @@
                                              class="mt-2 rounded d-flex align-items-center justify-content-center"
                                              style="width:100%;max-width:260px;height:140px;overflow:hidden;border:1px solid #e9ecef;background:#f8f9fa;">
                                             @if($img3)
-                                                <img src="{{ $img3 }}" style="width:100%;height:100%;object-fit:cover;">
+                                                <img src="{{ $img3 }}" style="width:100%;height:100%;object-fit:cover;" alt="">
                                             @else
                                                 <span class="text-muted">Chưa có ảnh</span>
                                             @endif
