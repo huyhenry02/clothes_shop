@@ -134,9 +134,7 @@ class ProductController extends Controller
         if ($url === '') {
             return;
         }
-
         $path = parse_url($url, PHP_URL_PATH) ?: $url;
-
         if (str_starts_with($path, '/storage/')) {
             $relative = ltrim(str_replace('/storage/', '', $path), '/');
             Storage::disk('public')->delete($relative);
