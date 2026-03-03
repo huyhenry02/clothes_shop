@@ -35,6 +35,10 @@ Route::prefix('admin')
                 Route::get('/', [EmployeeController::class, 'showIndex'])->name('showIndex');
                 Route::get('/create', [EmployeeController::class, 'showCreate'])->name('showCreate');
                 Route::get('/edit/{id}', [EmployeeController::class, 'showEdit'])->name('showEdit');
+
+                Route::post('/create', [EmployeeController::class, 'store'])->name('store');
+                Route::post('/edit/{id}', [EmployeeController::class, 'update'])->name('update');
+                Route::delete('/delete/{id}', [EmployeeController::class, 'destroy'])->name('destroy');
             });
 
         Route::prefix('customer')
@@ -43,6 +47,10 @@ Route::prefix('admin')
                 Route::get('/', [CustomerController::class, 'showIndex'])->name('showIndex');
                 Route::get('/create', [CustomerController::class, 'showCreate'])->name('showCreate');
                 Route::get('/edit/{id}', [CustomerController::class, 'showEdit'])->name('showEdit');
+
+                Route::post('/create', [CustomerController::class, 'store'])->name('store');
+                Route::post('/edit/{id}', [CustomerController::class, 'update'])->name('update');
+                Route::delete('/delete/{id}', [CustomerController::class, 'destroy'])->name('destroy');
             });
 
         Route::prefix('category')
@@ -51,6 +59,10 @@ Route::prefix('admin')
                 Route::get('/', [CategoryController::class, 'showIndex'])->name('showIndex');
                 Route::get('/create', [CategoryController::class, 'showCreate'])->name('showCreate');
                 Route::get('/edit/{id}', [CategoryController::class, 'showEdit'])->name('showEdit');
+
+                Route::post('/create', [CategoryController::class, 'store'])->name('store');
+                Route::post('/edit/{id}', [CategoryController::class, 'update'])->name('update');
+                Route::delete('/delete/{id}', [CategoryController::class, 'destroy'])->name('destroy');
             });
 
         Route::prefix('product')
@@ -60,5 +72,9 @@ Route::prefix('admin')
                 Route::get('/create', [ProductController::class, 'showCreate'])->name('showCreate');
                 Route::get('/edit/{id}', [ProductController::class, 'showEdit'])->name('showEdit');
                 Route::get('/detail/{id}', [ProductController::class, 'showDetail'])->name('showDetail');
+
+                Route::post('/create', [ProductController::class, 'store'])->name('store');
+                Route::post('/edit/{id}', [ProductController::class, 'update'])->name('update');
+                Route::delete('/delete/{id}', [ProductController::class, 'destroy'])->name('destroy');
             });
     });

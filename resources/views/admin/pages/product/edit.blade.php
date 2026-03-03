@@ -191,7 +191,7 @@
                                         <label class="form-label fw-semibold">Ảnh chính</label>
                                         <div class="input-group">
                                             <span class="input-group-text"><i class="feather-image"></i></span>
-                                            <input type="file" class="form-control image-input"
+                                            <input type="file" name="image" class="form-control image-input"
                                                    data-preview="preview-main">
                                         </div>
 
@@ -210,7 +210,7 @@
                                         <label class="form-label fw-semibold">Ảnh chi tiết 1</label>
                                         <div class="input-group">
                                             <span class="input-group-text"><i class="feather-image"></i></span>
-                                            <input type="file" class="form-control image-input"
+                                            <input type="file" name="image_detail_1" class="form-control image-input"
                                                    data-preview="preview-1">
                                         </div>
 
@@ -228,7 +228,7 @@
                                         <label class="form-label fw-semibold">Ảnh chi tiết 2</label>
                                         <div class="input-group">
                                             <span class="input-group-text"><i class="feather-image"></i></span>
-                                            <input type="file" class="form-control image-input"
+                                            <input type="file" name="image_detail_2" class="form-control image-input"
                                                    data-preview="preview-2">
                                         </div>
 
@@ -246,7 +246,7 @@
                                         <label class="form-label fw-semibold">Ảnh chi tiết 3</label>
                                         <div class="input-group">
                                             <span class="input-group-text"><i class="feather-image"></i></span>
-                                            <input type="file" class="form-control image-input"
+                                            <input type="file" name="image_detail_3" class="form-control image-input"
                                                    data-preview="preview-3">
                                         </div>
 
