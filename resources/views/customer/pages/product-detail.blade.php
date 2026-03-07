@@ -19,10 +19,21 @@
         </div>
     </div>
 
-
-    <!-- Product Detail -->
     <section class="sec-product-detail bg0 p-t-65 p-b-60">
         <div class="container">
+
+            @if(session('success'))
+                <div class="alert alert-success m-b-20">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="alert alert-danger m-b-20">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <div class="row">
                 <div class="col-md-6 col-lg-7 p-b-30">
                     <div class="p-l-25 p-r-30 p-lr-0-lg">
@@ -31,35 +42,52 @@
                             <div class="wrap-slick3-arrows flex-sb-m flex-w"></div>
 
                             <div class="slick3 gallery-lb">
-                                <div class="item-slick3" data-thumb="{{ $product->image_detail_1 ?? '' }}">
-                                    <div class="wrap-pic-w pos-relative">
-                                        <img src="{{ $product->image_detail_1 ?? '' }}" alt="IMG-PRODUCT">
+                                @if(!empty($product->image_detail_1))
+                                    <div class="item-slick3" data-thumb="{{ $product->image_detail_1 }}">
+                                        <div class="wrap-pic-w pos-relative">
+                                            <img src="{{ $product->image_detail_1 }}" alt="IMG-PRODUCT">
 
-                                        <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="{{ $product->image_detail_1 ?? '' }}">
-                                            <i class="fa fa-expand"></i>
-                                        </a>
+                                            <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
+                                               href="{{ $product->image_detail_1 }}">
+                                                <i class="fa fa-expand"></i>
+                                            </a>
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
 
-                                <div class="item-slick3" data-thumb="{{ $product->image_detail_2 ?? '' }}">
-                                    <div class="wrap-pic-w pos-relative">
-                                        <img src="{{ $product->image_detail_2 ?? '' }}" alt="IMG-PRODUCT">
+                                @if(!empty($product->image_detail_2))
+                                    <div class="item-slick3" data-thumb="{{ $product->image_detail_2 }}">
+                                        <div class="wrap-pic-w pos-relative">
+                                            <img src="{{ $product->image_detail_2 }}" alt="IMG-PRODUCT">
 
-                                        <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="{{ $product->image_detail_2 ?? '' }}">
-                                            <i class="fa fa-expand"></i>
-                                        </a>
+                                            <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
+                                               href="{{ $product->image_detail_2 }}">
+                                                <i class="fa fa-expand"></i>
+                                            </a>
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
 
-                                <div class="item-slick3" data-thumb="{{ $product->image_detail_3 ?? '' }}">
-                                    <div class="wrap-pic-w pos-relative">
-                                        <img src="{{ $product->image_detail_3 ?? '' }}" alt="IMG-PRODUCT">
+                                @if(!empty($product->image_detail_3))
+                                    <div class="item-slick3" data-thumb="{{ $product->image_detail_3 }}">
+                                        <div class="wrap-pic-w pos-relative">
+                                            <img src="{{ $product->image_detail_3 }}" alt="IMG-PRODUCT">
 
-                                        <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="{{ $product->image_detail_3 ?? '' }}">
-                                            <i class="fa fa-expand"></i>
-                                        </a>
+                                            <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
+                                               href="{{ $product->image_detail_3 }}">
+                                                <i class="fa fa-expand"></i>
+                                            </a>
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
+
+                                @if(empty($product->image_detail_1) && empty($product->image_detail_2) && empty($product->image_detail_3))
+                                    <div class="item-slick3" data-thumb="/customer/images/product-detail-01.jpg">
+                                        <div class="wrap-pic-w pos-relative">
+                                            <img src="/customer/images/product-detail-01.jpg" alt="IMG-PRODUCT">
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -71,83 +99,109 @@
                             {{ $product->name ?? '' }}
                         </h4>
 
+                        @php
+                            $finalPrice = (!empty($product->discount_price) && (int)$product->discount_price > 0)
+                                ? (int)$product->discount_price
+                                : (int)($product->price ?? 0);
+                        @endphp
+
                         <span class="mtext-106 cl2">
-							{{ number_format($product->discount_price ?? 0) }} VND
+							{{ number_format($finalPrice, 0, ',', '.') }} VND
 						</span>
 
                         <p class="stext-102 cl3 p-t-23">
                             {{ $product->description ?? '' }}
                         </p>
 
-                        <!--  -->
-                        <div class="p-t-33">
-                            <div class="flex-w flex-r-m p-b-10">
-                                <div class="size-203 flex-c-m respon6">
-                                    Size
-                                </div>
+                        <form action="{{ route('customer.cart.add') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
 
-                                <div class="size-204 respon6-next">
-                                    <div class="rs1-select2 bor8 bg0">
-                                        <select class="js-select2" name="time">
-                                            <option>Chọn size</option>
-                                            @foreach($product->sizeArray as $size)
-                                                <option value="{{ $size }}">{{ $size }}</option>
-                                            @endforeach
+                            <div class="p-t-33">
+                                <div class="flex-w flex-r-m p-b-10">
+                                    <div class="size-203 flex-c-m respon6">
+                                        Size
+                                    </div>
 
-                                        </select>
-                                        <div class="dropDownSelect2"></div>
+                                    <div class="size-204 respon6-next">
+                                        <div class="rs1-select2 bor8 bg0">
+                                            <select class="js-select2" name="size" required>
+                                                <option value="">Chọn size</option>
+                                                @foreach($product->sizeArray as $size)
+                                                    <option
+                                                        value="{{ $size }}" {{ old('size') == $size ? 'selected' : '' }}>
+                                                        {{ $size }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <div class="dropDownSelect2"></div>
+                                        </div>
+                                        @error('size')
+                                        <small class="text-danger d-block m-t-5">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="flex-w flex-r-m p-b-10">
-                                <div class="size-203 flex-c-m respon6">
-                                    Màu
-                                </div>
+                                <div class="flex-w flex-r-m p-b-10">
+                                    <div class="size-203 flex-c-m respon6">
+                                        Màu
+                                    </div>
 
-                                <div class="size-204 respon6-next">
-                                    <div class="rs1-select2 bor8 bg0">
-                                        <select class="js-select2" name="time">
-                                            <option>Chọn màu</option>
-                                            @foreach($product->colorArray as $color)
-                                                <option value="{{ $color }}">{{ $color }}</option>
-                                            @endforeach
-                                        </select>
-                                        <div class="dropDownSelect2"></div>
+                                    <div class="size-204 respon6-next">
+                                        <div class="rs1-select2 bor8 bg0">
+                                            <select class="js-select2" name="color" required>
+                                                <option value="">Chọn màu</option>
+                                                @foreach($product->colorArray as $color)
+                                                    <option
+                                                        value="{{ $color }}" {{ old('color') == $color ? 'selected' : '' }}>
+                                                        {{ $color }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <div class="dropDownSelect2"></div>
+                                        </div>
+                                        @error('color')
+                                        <small class="text-danger d-block m-t-5">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="flex-w flex-r-m p-b-10">
-                                <div class="size-204 flex-w flex-m respon6-next">
-                                    <div class="wrap-num-product flex-w m-r-20 m-tb-10">
-                                        <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-                                            <i class="fs-16 zmdi zmdi-minus"></i>
+                                <div class="flex-w flex-r-m p-b-10">
+                                    <div class="size-204 flex-w flex-m respon6-next">
+                                        <div class="wrap-num-product flex-w m-r-20 m-tb-10">
+                                            <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+                                                <i class="fs-16 zmdi zmdi-minus"></i>
+                                            </div>
+
+                                            <input class="mtext-104 cl3 txt-center num-product"
+                                                   type="number"
+                                                   name="quantity"
+                                                   min="1"
+                                                   value="{{ old('quantity', 1) }}">
+
+                                            <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+                                                <i class="fs-16 zmdi zmdi-plus"></i>
+                                            </div>
                                         </div>
 
-                                        <input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product" value="1">
-
-                                        <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-                                            <i class="fs-16 zmdi zmdi-plus"></i>
-                                        </div>
+                                        <button type="submit"
+                                                class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
+                                            Thêm vào giỏ hàng
+                                        </button>
                                     </div>
-
-                                    <button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
-                                        Thêm vào giỏ hàng
-                                    </button>
                                 </div>
-                            </div>
-                        </div>
 
-                        <!--  -->
+                                @error('quantity')
+                                <small class="text-danger d-block">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
 
             <div class="bor10 m-t-50 p-t-43 p-b-40">
-                <!-- Tab01 -->
                 <div class="tab01">
-                    <!-- Nav tabs -->
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="nav-item p-b-10">
                             <a class="nav-link active" data-toggle="tab" href="#description" role="tab">
@@ -156,7 +210,9 @@
                         </li>
 
                         <li class="nav-item p-b-10">
-                            <a class="nav-link" data-toggle="tab" href="#information" role="tab">Thông tin chi tiết</a>
+                            <a class="nav-link" data-toggle="tab" href="#information" role="tab">
+                                Thông tin chi tiết
+                            </a>
                         </li>
                     </ul>
 
@@ -168,6 +224,7 @@
                                 </p>
                             </div>
                         </div>
+
                         <div class="tab-pane fade" id="information" role="tabpanel">
                             <div class="row">
                                 <div class="col-sm-10 col-md-8 col-lg-6 m-lr-auto">
@@ -229,6 +286,7 @@
                 </div>
             </div>
         </div>
+
         <div class="bg6 flex-c-m flex-w size-302 m-t-73 p-tb-15">
 			<span class="stext-107 cl6 p-lr-25">
 				Mã sản phẩm: {{ $product->code ?? ''}}
@@ -239,33 +297,32 @@
         </div>
     </section>
 
-
     <!-- Related Products -->
     <section class="sec-relate-product bg0 p-t-45 p-b-105">
         <div class="container">
             <div class="p-b-45">
                 <h3 class="ltext-106 cl5 txt-center">
-                    Related Products
+                    Sản phẩm liên quan
                 </h3>
             </div>
 
-            <!-- Slide2 -->
             <div class="wrap-slick2">
                 <div class="slick2">
                     <div class="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
-                        <!-- Block2 -->
                         <div class="block2">
                             <div class="block2-pic hov-img0">
                                 <img src="/customer/images/product-01.jpg" alt="IMG-PRODUCT">
 
-                                <a href="#" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
-                                    Quick View
+                                <a href="#"
+                                   class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
+                                    Xem nhanh
                                 </a>
                             </div>
 
                             <div class="block2-txt flex-w flex-t p-t-14">
                                 <div class="block2-txt-child1 flex-col-l ">
-                                    <a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                    <a href="product-detail.html"
+                                       class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
                                         Esprit Ruffle Shirt
                                     </a>
 
@@ -276,8 +333,10 @@
 
                                 <div class="block2-txt-child2 flex-r p-t-3">
                                     <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-                                        <img class="icon-heart1 dis-block trans-04" src="/customer/images/icons/icon-heart-01.png" alt="ICON">
-                                        <img class="icon-heart2 dis-block trans-04 ab-t-l" src="/customer/images/icons/icon-heart-02.png" alt="ICON">
+                                        <img class="icon-heart1 dis-block trans-04"
+                                             src="/customer/images/icons/icon-heart-01.png" alt="ICON">
+                                        <img class="icon-heart2 dis-block trans-04 ab-t-l"
+                                             src="/customer/images/icons/icon-heart-02.png" alt="ICON">
                                     </a>
                                 </div>
                             </div>
@@ -285,19 +344,20 @@
                     </div>
 
                     <div class="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
-                        <!-- Block2 -->
                         <div class="block2">
                             <div class="block2-pic hov-img0">
                                 <img src="/customer/images/product-02.jpg" alt="IMG-PRODUCT">
 
-                                <a href="#" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
-                                    Quick View
+                                <a href="#"
+                                   class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
+                                    Xem nhanh
                                 </a>
                             </div>
 
                             <div class="block2-txt flex-w flex-t p-t-14">
                                 <div class="block2-txt-child1 flex-col-l ">
-                                    <a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                    <a href="product-detail.html"
+                                       class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
                                         Herschel supply
                                     </a>
 
@@ -308,8 +368,10 @@
 
                                 <div class="block2-txt-child2 flex-r p-t-3">
                                     <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-                                        <img class="icon-heart1 dis-block trans-04" src="/customer/images/icons/icon-heart-01.png" alt="ICON">
-                                        <img class="icon-heart2 dis-block trans-04 ab-t-l" src="/customer/images/icons/icon-heart-02.png" alt="ICON">
+                                        <img class="icon-heart1 dis-block trans-04"
+                                             src="/customer/images/icons/icon-heart-01.png" alt="ICON">
+                                        <img class="icon-heart2 dis-block trans-04 ab-t-l"
+                                             src="/customer/images/icons/icon-heart-02.png" alt="ICON">
                                     </a>
                                 </div>
                             </div>
@@ -317,19 +379,20 @@
                     </div>
 
                     <div class="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
-                        <!-- Block2 -->
                         <div class="block2">
                             <div class="block2-pic hov-img0">
                                 <img src="/customer/images/product-03.jpg" alt="IMG-PRODUCT">
 
-                                <a href="#" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
-                                    Quick View
+                                <a href="#"
+                                   class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
+                                    Xem nhanh
                                 </a>
                             </div>
 
                             <div class="block2-txt flex-w flex-t p-t-14">
                                 <div class="block2-txt-child1 flex-col-l ">
-                                    <a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                    <a href="product-detail.html"
+                                       class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
                                         Only Check Trouser
                                     </a>
 
@@ -340,8 +403,10 @@
 
                                 <div class="block2-txt-child2 flex-r p-t-3">
                                     <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-                                        <img class="icon-heart1 dis-block trans-04" src="/customer/images/icons/icon-heart-01.png" alt="ICON">
-                                        <img class="icon-heart2 dis-block trans-04 ab-t-l" src="/customer/images/icons/icon-heart-02.png" alt="ICON">
+                                        <img class="icon-heart1 dis-block trans-04"
+                                             src="/customer/images/icons/icon-heart-01.png" alt="ICON">
+                                        <img class="icon-heart2 dis-block trans-04 ab-t-l"
+                                             src="/customer/images/icons/icon-heart-02.png" alt="ICON">
                                     </a>
                                 </div>
                             </div>
@@ -349,19 +414,20 @@
                     </div>
 
                     <div class="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
-                        <!-- Block2 -->
                         <div class="block2">
                             <div class="block2-pic hov-img0">
                                 <img src="/customer/images/product-04.jpg" alt="IMG-PRODUCT">
 
-                                <a href="#" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
-                                    Quick View
+                                <a href="#"
+                                   class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
+                                    Xem nhanh
                                 </a>
                             </div>
 
                             <div class="block2-txt flex-w flex-t p-t-14">
                                 <div class="block2-txt-child1 flex-col-l ">
-                                    <a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                    <a href="product-detail.html"
+                                       class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
                                         Classic Trench Coat
                                     </a>
 
@@ -372,8 +438,10 @@
 
                                 <div class="block2-txt-child2 flex-r p-t-3">
                                     <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-                                        <img class="icon-heart1 dis-block trans-04" src="/customer/images/icons/icon-heart-01.png" alt="ICON">
-                                        <img class="icon-heart2 dis-block trans-04 ab-t-l" src="/customer/images/icons/icon-heart-02.png" alt="ICON">
+                                        <img class="icon-heart1 dis-block trans-04"
+                                             src="/customer/images/icons/icon-heart-01.png" alt="ICON">
+                                        <img class="icon-heart2 dis-block trans-04 ab-t-l"
+                                             src="/customer/images/icons/icon-heart-02.png" alt="ICON">
                                     </a>
                                 </div>
                             </div>
@@ -381,19 +449,20 @@
                     </div>
 
                     <div class="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
-                        <!-- Block2 -->
                         <div class="block2">
                             <div class="block2-pic hov-img0">
                                 <img src="/customer/images/product-05.jpg" alt="IMG-PRODUCT">
 
-                                <a href="#" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
-                                    Quick View
+                                <a href="#"
+                                   class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
+                                    Xem nhanh
                                 </a>
                             </div>
 
                             <div class="block2-txt flex-w flex-t p-t-14">
                                 <div class="block2-txt-child1 flex-col-l ">
-                                    <a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                    <a href="product-detail.html"
+                                       class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
                                         Front Pocket Jumper
                                     </a>
 
@@ -404,8 +473,10 @@
 
                                 <div class="block2-txt-child2 flex-r p-t-3">
                                     <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-                                        <img class="icon-heart1 dis-block trans-04" src="/customer/images/icons/icon-heart-01.png" alt="ICON">
-                                        <img class="icon-heart2 dis-block trans-04 ab-t-l" src="/customer/images/icons/icon-heart-02.png" alt="ICON">
+                                        <img class="icon-heart1 dis-block trans-04"
+                                             src="/customer/images/icons/icon-heart-01.png" alt="ICON">
+                                        <img class="icon-heart2 dis-block trans-04 ab-t-l"
+                                             src="/customer/images/icons/icon-heart-02.png" alt="ICON">
                                     </a>
                                 </div>
                             </div>
@@ -413,19 +484,20 @@
                     </div>
 
                     <div class="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
-                        <!-- Block2 -->
                         <div class="block2">
                             <div class="block2-pic hov-img0">
                                 <img src="/customer/images/product-06.jpg" alt="IMG-PRODUCT">
 
-                                <a href="#" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
-                                    Quick View
+                                <a href="#"
+                                   class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
+                                    Xem nhanh
                                 </a>
                             </div>
 
                             <div class="block2-txt flex-w flex-t p-t-14">
                                 <div class="block2-txt-child1 flex-col-l ">
-                                    <a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                    <a href="product-detail.html"
+                                       class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
                                         Vintage Inspired Classic
                                     </a>
 
@@ -436,8 +508,10 @@
 
                                 <div class="block2-txt-child2 flex-r p-t-3">
                                     <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-                                        <img class="icon-heart1 dis-block trans-04" src="/customer/images/icons/icon-heart-01.png" alt="ICON">
-                                        <img class="icon-heart2 dis-block trans-04 ab-t-l" src="/customer/images/icons/icon-heart-02.png" alt="ICON">
+                                        <img class="icon-heart1 dis-block trans-04"
+                                             src="/customer/images/icons/icon-heart-01.png" alt="ICON">
+                                        <img class="icon-heart2 dis-block trans-04 ab-t-l"
+                                             src="/customer/images/icons/icon-heart-02.png" alt="ICON">
                                     </a>
                                 </div>
                             </div>
@@ -445,19 +519,20 @@
                     </div>
 
                     <div class="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
-                        <!-- Block2 -->
                         <div class="block2">
                             <div class="block2-pic hov-img0">
                                 <img src="/customer/images/product-07.jpg" alt="IMG-PRODUCT">
 
-                                <a href="#" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
-                                    Quick View
+                                <a href="#"
+                                   class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
+                                    Xem nhanh
                                 </a>
                             </div>
 
                             <div class="block2-txt flex-w flex-t p-t-14">
                                 <div class="block2-txt-child1 flex-col-l ">
-                                    <a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                    <a href="product-detail.html"
+                                       class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
                                         Shirt in Stretch Cotton
                                     </a>
 
@@ -468,8 +543,10 @@
 
                                 <div class="block2-txt-child2 flex-r p-t-3">
                                     <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-                                        <img class="icon-heart1 dis-block trans-04" src="/customer/images/icons/icon-heart-01.png" alt="ICON">
-                                        <img class="icon-heart2 dis-block trans-04 ab-t-l" src="/customer/images/icons/icon-heart-02.png" alt="ICON">
+                                        <img class="icon-heart1 dis-block trans-04"
+                                             src="/customer/images/icons/icon-heart-01.png" alt="ICON">
+                                        <img class="icon-heart2 dis-block trans-04 ab-t-l"
+                                             src="/customer/images/icons/icon-heart-02.png" alt="ICON">
                                     </a>
                                 </div>
                             </div>
@@ -477,19 +554,20 @@
                     </div>
 
                     <div class="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
-                        <!-- Block2 -->
                         <div class="block2">
                             <div class="block2-pic hov-img0">
                                 <img src="/customer/images/product-08.jpg" alt="IMG-PRODUCT">
 
-                                <a href="#" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
-                                    Quick View
+                                <a href="#"
+                                   class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
+                                    Xem nhanh
                                 </a>
                             </div>
 
                             <div class="block2-txt flex-w flex-t p-t-14">
                                 <div class="block2-txt-child1 flex-col-l ">
-                                    <a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                    <a href="product-detail.html"
+                                       class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
                                         Pieces Metallic Printed
                                     </a>
 
@@ -500,8 +578,10 @@
 
                                 <div class="block2-txt-child2 flex-r p-t-3">
                                     <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-                                        <img class="icon-heart1 dis-block trans-04" src="/customer/images/icons/icon-heart-01.png" alt="ICON">
-                                        <img class="icon-heart2 dis-block trans-04 ab-t-l" src="/customer/images/icons/icon-heart-02.png" alt="ICON">
+                                        <img class="icon-heart1 dis-block trans-04"
+                                             src="/customer/images/icons/icon-heart-01.png" alt="ICON">
+                                        <img class="icon-heart2 dis-block trans-04 ab-t-l"
+                                             src="/customer/images/icons/icon-heart-02.png" alt="ICON">
                                     </a>
                                 </div>
                             </div>

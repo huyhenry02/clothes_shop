@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Customer\CheckoutController;
 use App\Http\Controllers\Customer\ShopController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,18 @@ Route::prefix('customer')
         Route::get('/contact', [ShopController::class, 'showContact'])->name('showContact');
         Route::get('/products', [ShopController::class, 'showProducts'])->name('showProducts');
         Route::get('/product/{product}', [ShopController::class, 'showProductDetail'])->name('showProductDetail');
+
+        Route::get('/cart', [CheckoutController::class, 'showCart'])->name('showCart');
+        Route::post('/cart/add', [CheckoutController::class, 'addToCart'])->name('cart.add');
+        Route::post('/cart/update/{id}', [CheckoutController::class, 'updateCart'])->name('cart.update');
+        Route::delete('/cart/delete/{id}', [CheckoutController::class, 'deleteCart'])->name('cart.delete');
+
+        Route::get('/checkout', [CheckoutController::class, 'showCheckout'])->name('showCheckout');
+        Route::post('/checkout', [CheckoutController::class, 'storeOrder'])->name('storeOrder');
+
+        Route::get('/orders', [CheckoutController::class, 'index'])->name('orders.index');
+        Route::get('/orders/{id}', [CheckoutController::class, 'show'])->name('orders.show');
+
     });
 
 Route::prefix('admin')

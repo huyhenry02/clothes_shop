@@ -40,7 +40,9 @@
 
 @include('customer.layouts.header')
 
-@include('customer.layouts.cart')
+@if( auth()->user() )
+    @include('customer.layouts.cart')
+@endif
 
 
 @yield('content')
